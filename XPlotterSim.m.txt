@@ -1,0 +1,67 @@
+tiledlayout(2,2) % Requires R2019b or later
+n=100;
+a=0;b=0;c=0;A=0;B=0;C=0;
+maxT=4; %Max linear translation per second of actual device
+for i=1:n
+    if a==A
+        if b==B
+            if c==C
+                A=randi(30);%Picks new (A,B,C) once (a,b,c)==(A,B,C)
+                B=randi(30);
+                C=randi(30);
+            end 
+        end
+    end
+    if abs(a-A)<maxT%Repositions (a,b,c) by at most maxT until they reach (A,B,C)
+        a=A;
+    elseif (a-A)>0%Checks for negative motion
+        a=a-maxT;
+    elseif (a-A)<0%checks for positive motion
+        a=a+maxT;end
+    if abs(b-B)<maxT
+        b=B;
+    elseif (b-B)>0%Checks for negative motion
+        b=b-maxT;
+    elseif (b-B)<0%checks for positive motion
+        b=b+maxT;end
+    if abs(c-C)<maxT
+        c=C;
+    elseif (c-C)>0%Checks for negative motion
+        c=c-maxT;
+    elseif (c-C)<0%checks for positive motion
+        c=c+maxT;end
+    
+    clf
+    nexttile% X plot
+    hold on
+    patch([a-4,a+4,a],[20,20,10],'r')
+    plot(A,10,'c.','MarkerSize',17)
+    axis([0 35 0 20])
+    title('x-width Axis')
+%     hold off
+    nexttile% Y plot
+    hold on
+    axis([0 35 0 20])
+    patch([b-4,b+4,b],[20,20,10],'r')
+    plot(B,10,'c.','MarkerSize',17)
+    title('y-depth Axis')
+%     hold off
+    nexttile% Z plot
+    hold on
+    axis([0 35 0 20])
+    patch([c-4,c+4,c],[20,20,10],'r')
+    plot(C,10,'c.','MarkerSize',17)
+    title('z-vertical Axis')
+%     hold off
+    nexttile% 3D plot
+    hold on
+    plot3([A],[B],[C],'c.','MarkerSize',17)%Marks (A,B,C) with a cyan dot
+    axis([0 35 0 35 0 35])
+%     pause(0.001)
+    plot3([a],[b],[c],'r.','MarkerSize',17)%Makes a red dot
+%     hold off
+    axis([0 35 0 35 0 35])
+    view(3)     % SHOW 3D VIEW
+    grid on     % SHOW GRID
+    pause(0.01)
+end
